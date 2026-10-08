@@ -1,0 +1,186 @@
+/* =========================================================
+   THOUGHTSTREAM — EXPLORE
+   ========================================================= */
+
+.explore-header {
+  margin-bottom: 20px;
+}
+
+.explore-header h1 {
+  margin: 0;
+  color: #171717;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+}
+
+.explore-header p {
+  margin: 6px 0 0;
+  color: #999999;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ---------------------------------------------------------
+   Search bar
+   --------------------------------------------------------- */
+
+.explore-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 14px;
+  margin-bottom: 22px;
+  border: 1px solid #e7e7e7;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.explore-search-icon {
+  color: #999999;
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.explore-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: #171717;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.explore-search input::placeholder {
+  color: #aaaaaa;
+}
+
+.explore-search-shortcut {
+  flex-shrink: 0;
+  padding: 2px 6px;
+  border: 1px solid #eeeeee;
+  border-radius: 5px;
+  color: #bbbbbb;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------
+   Topics
+   --------------------------------------------------------- */
+
+.explore-topics {
+  margin-bottom: 28px;
+}
+
+.explore-section-title {
+  margin: 0 0 12px;
+  color: #999999;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.explore-topics-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.explore-topic-chip {
+  padding: 7px 14px;
+  border: 1px solid #e7e7e7;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #333333;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.explore-topic-chip:hover {
+  background: #f5f5f5;
+  border-color: #cfcfcf;
+  color: #171717;
+}
+
+/* ---------------------------------------------------------
+   Trending thoughts section
+   --------------------------------------------------------- */
+
+.explore-thoughts {
+  margin-top: 8px;
+}
+
+.explore-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 50px 20px;
+  border: 1px dashed #e7e7e7;
+  border-radius: 12px;
+  background: #fafafa;
+  text-align: center;
+}
+
+.explore-empty p {
+  margin: 0;
+  color: #555555;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.explore-empty span {
+  color: #999999;
+  font-size: 11px;
+}
+
+/* Update for the loading/empty states when thoughts exist */
+.explore-empty .loading-spinner {
+  margin-bottom: 4px;
+}
+
+.explore-empty {
+  padding: 40px 20px;
+}
+
+.explore-thoughts .thought-list {
+  margin-top: 4px;
+}
+
+/* =========================================================
+   HASHTAGS
+   ========================================================= */
+
+.hashtag {
+  color: #1d9bf0;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.hashtag:hover {
+  text-decoration: underline;
+}
+
+.explore-topic-chip.active {
+  background: #171717;
+  border-color: #171717;
+  color: #ffffff;
+}
+
+.explore-topic-chip.active:hover {
+  background: #333333;
+  border-color: #333333;
+  color: #ffffff;
+}
