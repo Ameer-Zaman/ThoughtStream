@@ -1,0 +1,565 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #fff;
+  padding-top: 35px;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================
+   HEADING
+========================= */
+
+.auth-heading {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-heading h1 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+.auth-heading p {
+  margin: 6px 0 0;
+  color: #737373;
+  font-size: 15px;
+  line-height: 21px;
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-card {
+  width: 450px;
+  padding: 38px 35px 32px;
+  border: 1px solid #dddddd;
+  border-radius: 14px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* =========================
+   GOOGLE
+========================= */
+
+.google-login {
+  width: 100%;
+  height: 48px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+/* =========================
+   DIVIDER
+========================= */
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 27px 0 29px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  background: #e5e5e5;
+  flex: 1;
+}
+
+.divider span {
+  color: #999;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+}
+
+/* =========================
+   LOGIN FORM
+========================= */
+
+.login-card form {
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================
+   LOGIN ERROR
+========================= */
+
+.status-error {
+  display: block !important;
+  width: 100% !important;
+
+  margin: 0 0 18px !important;
+  padding: 11px 13px !important;
+
+  background: #fff5f5 !important;
+  color: #d32f2f !important;
+
+  border: 1px solid #f1bebe !important;
+  border-radius: 8px !important;
+
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 18px !important;
+
+  box-sizing: border-box !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  position: relative !important;
+  z-index: 99999 !important;
+}
+
+/* =========================
+   LOGIN FORM GROUP
+========================= */
+
+.form-group {
+  margin-bottom: 19px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #292929;
+
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  height: 47px;
+
+  padding: 0 13px;
+
+  border: 1px solid #ddd;
+  border-radius: 9px;
+
+  outline: none;
+  background: #fff;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  border-color: #aaa;
+}
+
+/* =========================
+   PASSWORD
+========================= */
+
+.password-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 7px;
+}
+
+.password-row label {
+  margin-bottom: 0;
+}
+
+.password-row a {
+  color: #737373;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+.login-button {
+  width: 100%;
+  height: 48px;
+
+  margin-top: 4px;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: #111;
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background: #222;
+}
+
+.login-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* =========================
+   LOGIN LOADING
+========================= */
+
+.login-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.login-spinner {
+  width: 15px;
+  height: 15px;
+
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+
+  border-radius: 50%;
+
+  animation: loginSpin 0.7s linear infinite;
+}
+
+@keyframes loginSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   SIGN UP / LOGIN SWITCH
+========================= */
+
+.auth-switch {
+  margin: 25px 0 0;
+
+  color: #777;
+
+  font-size: 14px;
+  line-height: 20px;
+
+  text-align: center;
+}
+
+.auth-switch a {
+  margin-left: 3px;
+
+  color: #111;
+
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* =========================
+   LOGIN MOBILE
+========================= */
+
+@media (max-width: 500px) {
+  .auth-page {
+    padding: 25px 15px;
+  }
+
+  .auth-container {
+    max-width: 100%;
+  }
+
+  .login-card {
+    width: 100%;
+    padding: 32px 24px 28px;
+  }
+
+  .auth-heading h1 {
+    font-size: 27px;
+  }
+
+  .auth-heading p {
+    font-size: 14px;
+  }
+}
+
+/* =====================================================
+   SIGNUP PAGE
+===================================================== */
+
+.signup-container {
+  max-width: 450px;
+}
+
+/* =========================
+   SIGNUP HEADING
+========================= */
+
+.signup-container .auth-heading {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.signup-container .auth-heading h1 {
+  margin: 0;
+
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+.signup-container .auth-heading p {
+  margin: 6px 0 0;
+
+  color: #737373;
+
+  font-size: 15px;
+  line-height: 21px;
+}
+
+/* =========================
+   SIGNUP CARD
+========================= */
+
+.signup-card {
+  width: 450px;
+
+  padding: 32px 35px 30px;
+
+  border: 1px solid #dddddd;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-sizing: border-box;
+}
+
+/* =========================
+   SIGNUP GOOGLE
+========================= */
+
+.signup-card .google-login {
+  width: 100%;
+  height: 48px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+/* =========================
+   SIGNUP DIVIDER
+========================= */
+
+.signup-card .divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 25px 0;
+}
+
+.signup-card .divider::before,
+.signup-card .divider::after {
+  content: "";
+
+  height: 1px;
+  background: #e5e5e5;
+
+  flex: 1;
+}
+
+.signup-card .divider span {
+  color: #999999;
+
+  font-size: 10px;
+  letter-spacing: 1.2px;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   SIGNUP FORM
+========================= */
+
+.signup-card form {
+  margin: 0;
+  padding: 0;
+}
+
+.signup-card .form-group {
+  margin-bottom: 17px;
+}
+
+.signup-card .form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #292929;
+
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.signup-card .form-group input {
+  width: 100%;
+  height: 45px;
+
+  padding: 0 13px;
+
+  border: 1px solid #dddddd;
+  border-radius: 9px;
+
+  outline: none;
+  background: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  box-sizing: border-box;
+}
+
+.signup-card .form-group input:focus {
+  border-color: #aaaaaa;
+}
+
+/* =========================
+   SIGNUP ERROR
+========================= */
+
+.signup-error {
+  display: block !important;
+  width: 100% !important;
+
+  margin: 0 0 18px !important;
+  padding: 11px 13px !important;
+
+  background: #fff5f5 !important;
+  color: #d32f2f !important;
+
+  border: 1px solid #f1bebe !important;
+  border-radius: 8px !important;
+
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 18px !important;
+
+  box-sizing: border-box !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  position: relative !important;
+  z-index: 99999 !important;
+}
+
+/* =========================
+   CREATE ACCOUNT BUTTON
+========================= */
+
+.signup-button {
+  width: 100%;
+  height: 48px;
+
+  margin-top: 3px;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: #111111;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background: #222222;
+}
+
+.signup-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* =========================
+   SIGNUP LOGIN LINK
+========================= */
+
+.signup-container .auth-switch {
+  margin: 25px 0 0;
+
+  color: #777777;
+
+  font-size: 14px;
+  line-height: 20px;
+
+  text-align: center;
+}
+
+.signup-container .auth-switch a {
+  margin-left: 3px;
+
+  color: #111111;
+
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+/* =========================
+   SIGNUP MOBILE
+========================= */
+
+@media (max-width: 500px) {
+  .signup-card {
+    width: 100%;
+    padding: 30px 24px 27px;
+  }
+
+  .signup-container .auth-heading h1 {
+    font-size: 27px;
+    line-height: 33px;
+  }
+
+  .signup-container .auth-heading p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .signup-error {
+    width: 100% !important;
+  }
+}

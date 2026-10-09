@@ -1,0 +1,614 @@
+/* =========================================================
+   THOUGHTSTREAM — PROFILE
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.profile-page {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 30px 24px 60px;
+}
+
+.profile-message {
+  padding: 40px 20px;
+  text-align: center;
+  color: #999999;
+  font-size: 13px;
+}
+
+/* =========================================================
+   PROFILE CARD
+   ========================================================= */
+
+.profile-card {
+  border: 1px solid #e7e7e7;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.profile-cover {
+  width: 100%;
+  height: 180px;
+  background: #f0f0f0;
+}
+
+.profile-cover img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.profile-details {
+  position: relative;
+  padding: 20px 24px 24px;
+}
+
+.profile-avatar {
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  margin-top: -62px;
+  margin-bottom: 14px;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  background: #171717;
+  color: #ffffff;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------------------------------------------------------
+   Profile info
+   --------------------------------------------------------- */
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.profile-heading h1 {
+  margin: 0;
+  color: #171717;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.profile-username {
+  margin: 4px 0 0;
+  color: #999999;
+  font-size: 12px;
+}
+
+.profile-bio {
+  margin: 0;
+  color: #333333;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------
+   Profile action buttons (Follow / Message / Edit)
+   --------------------------------------------------------- */
+
+.profile-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.edit-profile-button {
+  min-width: 92px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border: 1px solid #dddddd;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #333333;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.edit-profile-button:hover {
+  background: #f5f5f5;
+  border-color: #cfcfcf;
+}
+
+.edit-profile-button:active {
+  transform: scale(0.97);
+}
+
+.message-profile-button {
+  min-width: 68px;
+  height: 29px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border: 1px solid #dddddd;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #333333;
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.message-profile-button:hover {
+  background: #f5f5f5;
+  border-color: #cfcfcf;
+}
+
+.message-profile-button:active {
+  transform: scale(0.96);
+}
+
+/* ---------------------------------------------------------
+   Profile stats
+   --------------------------------------------------------- */
+
+.profile-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 4px;
+  color: #555555;
+  font-size: 12px;
+}
+
+.profile-stats span {
+  color: #666666;
+}
+
+.profile-stats strong {
+  color: #171717;
+  font-weight: 700;
+  margin-right: 3px;
+}
+
+/* =========================================================
+   FOLLOWERS / FOLLOWING POPUP
+   ========================================================= */
+
+.profile-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.edit-profile-card {
+  width: 100%;
+  max-width: 440px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+  border: 1px solid #e7e7e7;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.edit-profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.edit-profile-header h2 {
+  margin: 0;
+  color: #171717;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.close-edit-button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #999999;
+  font-family: inherit;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.close-edit-button:hover:not(:disabled) {
+  background: #f4f4f4;
+  color: #333333;
+}
+
+.close-edit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ---------------------------------------------------------
+   Follow list rows
+   --------------------------------------------------------- */
+
+.follow-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.follow-user:last-child {
+  border-bottom: 0;
+}
+
+.follow-user img {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f0f0f0;
+}
+
+.follow-user > div {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.follow-user strong {
+  overflow: hidden;
+  color: #222222;
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.follow-user span {
+  overflow: hidden;
+  color: #999999;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   EDIT PROFILE FORM
+   ========================================================= */
+
+.edit-profile-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.edit-profile-card label {
+  margin-top: 8px;
+  color: #333333;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.edit-profile-card input,
+.edit-profile-card textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  outline: none;
+  background: #fafafa;
+  color: #222222;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.edit-profile-card input:focus,
+.edit-profile-card textarea:focus {
+  border-color: #cfcfcf;
+  background: #ffffff;
+}
+
+.edit-profile-card textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.bio-character-count {
+  align-self: flex-end;
+  color: #aaaaaa;
+  font-size: 10px;
+}
+
+.profile-save-error {
+  margin: 8px 0 0;
+  color: #c62828;
+  font-size: 11px;
+}
+
+.edit-profile-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.cancel-edit-button,
+.save-profile-button {
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.cancel-edit-button {
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  color: #333333;
+}
+
+.cancel-edit-button:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #cfcfcf;
+}
+
+.save-profile-button {
+  border: 1px solid #171717;
+  background: #171717;
+  color: #ffffff;
+}
+
+.save-profile-button:hover:not(:disabled) {
+  background: #333333;
+  border-color: #333333;
+}
+
+.save-profile-button:active:not(:disabled),
+.cancel-edit-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.cancel-edit-button:disabled,
+.save-profile-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* =========================================================
+   THOUGHTS SECTION
+   ========================================================= */
+
+.profile-thoughts {
+  margin-top: 30px;
+}
+
+.profile-thoughts h2 {
+  margin: 0 0 14px;
+  color: #171717;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.no-thoughts {
+  padding: 24px;
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  background: #fafafa;
+  color: #999999;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------
+   Individual thought card
+   --------------------------------------------------------- */
+
+.profile-thought {
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.profile-thought:last-child {
+  margin-bottom: 0;
+}
+
+/* Header: avatar + author + menu */
+
+.profile-thought-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.profile-thought-avatar {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.profile-thought-author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-thought-author strong {
+  overflow: hidden;
+  color: #222222;
+  font-size: 11px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-thought-author span {
+  font-size: 10px;
+  color: #999999;
+}
+
+/* Menu (three dot) */
+
+.profile-thought-menu {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Content */
+
+.profile-thought-content {
+  margin: 0;
+  color: #333333;
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* Stats row: likes, comments, edited */
+
+.profile-thought-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.profile-thought-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #71767b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.profile-thought-stat-icon {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.profile-thought-edited {
+  margin-left: auto;
+  color: #aaaaaa;
+  font-size: 10px;
+  font-style: italic;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 20px 14px 45px;
+  }
+
+  .profile-cover {
+    height: 140px;
+  }
+
+  .profile-details {
+    padding: 16px 16px 20px;
+  }
+
+  .profile-avatar {
+    width: 72px;
+    height: 72px;
+    font-size: 26px;
+    margin-top: -52px;
+  }
+
+  .profile-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .profile-heading h1 {
+    font-size: 19px;
+  }
+
+  .profile-stats {
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 11px;
+  }
+
+  .edit-profile-card {
+    padding: 16px;
+  }
+
+  .profile-thought {
+    padding: 13px;
+  }
+}
