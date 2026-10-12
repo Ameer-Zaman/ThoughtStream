@@ -6,6 +6,7 @@ const socket = io(API_URL, {
   withCredentials: true,
   autoConnect: false,
   // Use a WebSocket straight away (falls back to polling only if WebSockets are blocked).
+  // Polling-first is what produced "400 Bad Request ... socket.io/?EIO=4&transport=polling&sid=..." after server restarts.
   transports: ["websocket", "polling"],
 });
 

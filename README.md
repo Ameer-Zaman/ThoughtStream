@@ -86,3 +86,9 @@ Both services must use HTTPS (cookies are `secure`). Add the frontend URL to you
 - Notifications, Saved, and Settings pages are placeholders; Share and Bookmark icons are visual only.
 - `/api/users/forgot-password` returns the `resetToken` in the JSON **only when not in production**.
 - Extra (not in the original spec): `GET /api/thoughts?author=<userId>` powers the profile thought list.
+
+## Admin panel
+
+1. Sign up normally, then add your email to `ADMIN_EMAILS` in `server/.env` (comma-separated for several) and restart the server.
+2. Log in again. An **Admin** link appears in the sidebar (`/admin`).
+3. Overview shows totals, Users lets you make or remove admins and disable or enable accounts (disabling logs them out), and Thoughts lets you hide, show or delete any thought.

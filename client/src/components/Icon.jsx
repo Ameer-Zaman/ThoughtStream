@@ -16,6 +16,8 @@ const paths = {
   close: "M6 6l12 12M18 6 6 18",
   send: "M4 12 20 4l-4 16-4-6z",
   back: "M15 5l-7 7 7 7",
+  shield: "M12 3 4 6v6c0 4.5 3.2 8 8 9 4.8-1 8-4.5 8-9V6zM9 12l2 2 4-4",
+  poll: "M5 20V10M12 20V4M19 20v-7",
 };
 
 export default function Icon({ name, size = 20, filled = false, strokeWidth = 1.8 }) {

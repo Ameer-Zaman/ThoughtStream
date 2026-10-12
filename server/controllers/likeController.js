@@ -124,4 +124,5 @@ module.exports = {
   likeThought,
   unlikeThought,
   getThoughtLikes,
+  getLikes
 };

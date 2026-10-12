@@ -22,7 +22,7 @@ const items = [
 ];
 
 export default function Sidebar() {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -37,7 +37,7 @@ export default function Sidebar() {
         <span className="brand-text">ThoughtStream</span>
       </div>
       <nav className="nav">
-        {items.map((item) => (
+        {(user?.role === "admin" ? [...items, { to: "/admin", label: "Admin", icon: "shield" }] : items).map((item) => (
           <NavLink
             key={item.to}
             to={item.to}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
+import GoogleButton from "../components/GoogleButton";
 import api, { errMsg } from "../api";
 import { useAuth } from "../context/AuthContext";
 
@@ -11,7 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const googleEnabled = !!import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   const submit = async (e) => {
     e.preventDefault();
@@ -27,10 +26,10 @@ export default function Login() {
     }
   };
 
-  const onGoogle = async (response) => {
+  const onGoogle = async (credential) => {
     setError("");
     try {
-      const res = await api.post("/users/google-login", { credential: response.credential });
+      const res = await api.post("/users/google-login", { credential });
       setUser(res.data.user);
       navigate("/");
     } catch (err) {
@@ -61,14 +60,8 @@ export default function Login() {
           {busy ? "Please wait…" : "Log in"}
         </button>
 
-        {googleEnabled && (
-          <>
-            <div className="divider">or</div>
-            <div className="google-wrap">
-              <GoogleLogin onSuccess={onGoogle} onError={() => setError("Google login failed")} />
-            </div>
-          </>
-        )}
+        <div className="divider">or</div>
+        <GoogleButton mode="signin" onCredential={onGoogle} onError={setError} />
 
         <p className="auth-footer">
           New here? <Link to="/signup">Create an account</Link>

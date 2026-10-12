@@ -19,6 +19,7 @@ const search = async (req, res) => {
     const regex = new RegExp(safeQuery, "i");
 
     const [thoughts, users] = await Promise.all([
+<<<<<<< HEAD
       Thought.aggregate([
         { $match: { content: regex } },
         {
@@ -48,6 +49,12 @@ const search = async (req, res) => {
         { $sort: { createdAt: -1 } },
         { $limit: 30 },
       ]),
+=======
+      Thought.find({ content: regex })
+        .populate("authorId", "fullName username profilePicture")
+        .sort({ createdAt: -1 })
+        .limit(30),
+>>>>>>> a257e29c522d71de89eef4b0b227090e19f37dee
 
       User.find({
         $or: [{ username: regex }, { fullName: regex }],
@@ -56,11 +63,14 @@ const search = async (req, res) => {
         .limit(20),
     ]);
 
+<<<<<<< HEAD
     await Thought.populate(thoughts, {
       path: "authorId",
       select: "fullName username profilePicture",
     });
 
+=======
+>>>>>>> a257e29c522d71de89eef4b0b227090e19f37dee
     return res.status(200).json({
       thoughts,
       users,

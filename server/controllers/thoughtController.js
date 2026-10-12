@@ -223,7 +223,10 @@ const getTrendingThoughts = async (req, res) => {
         $addFields: {
           likeCount: { $size: "$likes" },
           commentCount: { $size: "$comments" },
+<<<<<<< HEAD
           liked: { $in: [req.user._id, "$likes.userId"] },
+=======
+>>>>>>> a257e29c522d71de89eef4b0b227090e19f37dee
           score: {
             $add: [
               { $multiply: [{ $size: "$likes" }, 2] },
@@ -306,11 +309,12 @@ const getThoughtsByTopic = async (req, res) => {
       "i",
     );
 
-    const thoughts = await withEngagement(
-      { content: hashtagPattern },
-      req.user._id,
-      { sort: { createdAt: -1 }, limit: 50 },
-    );
+    const thoughts = await Thought.find({
+      content: hashtagPattern,
+    })
+      .populate("authorId", "fullName username profilePicture")
+      .sort({ createdAt: -1 })
+      .limit(50);
 
     return res.status(200).json({ thoughts });
   } catch (error) {

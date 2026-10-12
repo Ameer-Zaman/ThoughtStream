@@ -4,6 +4,7 @@ import api, { errMsg } from "../api";
 import Avatar from "./Avatar";
 import Icon from "./Icon";
 import CommentSection from "./CommentSection";
+import Poll from "./Poll";
 import { formatDate, renderContent } from "./format";
 import { useAuth } from "../context/AuthContext";
 
@@ -160,6 +161,8 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
           ) : (
             <div className="thought-content">{renderContent(t.content)}</div>
           )}
+
+          {t.poll && <Poll thoughtId={t._id} poll={t.poll} onChange={(poll) => onChange(t._id, { poll })} />}
 
           {error && <div className="form-error">{error}</div>}
 

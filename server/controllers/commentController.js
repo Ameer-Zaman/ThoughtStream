@@ -52,6 +52,7 @@ const createComment = async (req, res) => {
     });
 
     await comment.populate("authorId", "fullName username profilePicture");
+    await comment.populate("authorId", "fullName username profileImage");
 
     return res.status(201).json({
       message: "Comment added successfully",
@@ -81,6 +82,7 @@ const getComments = async (req, res) => {
 
     const comments = await Comment.find({ thoughtId })
       .populate("authorId", "fullName username profilePicture")
+      .populate("authorId", "fullName username profileImage")
       .sort({ createdAt: -1 });
 
     const commentCount = await Comment.countDocuments({

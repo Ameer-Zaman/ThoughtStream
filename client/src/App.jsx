@@ -11,12 +11,18 @@ import Explore from "./pages/Explore";
 import Profile from "./pages/Profile";
 import Messages from "./pages/Messages";
 import Placeholder from "./pages/Placeholder";
+import Admin from "./pages/Admin";
 
 function Protected() {
   const { user, loading } = useAuth();
   if (loading) return <div className="center-screen">Loading…</div>;
   if (!user) return <Navigate to="/login" replace />;
   return <Layout />;
+}
+
+function AdminOnly({ children }) {
+  const { user } = useAuth();
+  return user && user.role === "admin" ? children : <Navigate to="/" replace />;
 }
 
 function PublicOnly({ children }) {
@@ -42,6 +48,7 @@ export default function App() {
         <Route path="/messages" element={<Messages />} />
         <Route path="/notifications" element={<Placeholder title="Notifications" />} />
         <Route path="/saved" element={<Placeholder title="Saved" />} />
+        <Route path="/admin" element={<AdminOnly><Admin /></AdminOnly>} />
         <Route path="/settings" element={<Placeholder title="Settings" />} />
       </Route>
 
