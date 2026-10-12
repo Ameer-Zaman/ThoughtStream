@@ -17,14 +17,15 @@ const baseCookieOptions = () => ({
 
 async function createSession(res, userId) {
   const token = crypto.randomBytes(32).toString("hex");
+  const now = new Date();
   await Session.create({
     userId,
     sessionTokenHash: hashToken(token),
-    expiresAt: new Date(Date.now() + SEVEN_DAYS),
+    expiresAt: new Date(now.getTime() + SEVEN_DAYS),
+    lastActiveAt: now,
   });
   res.cookie("session", token, { ...baseCookieOptions(), maxAge: SEVEN_DAYS });
 }
-
 function clearSessionCookie(res) {
   res.clearCookie("session", baseCookieOptions());
 }

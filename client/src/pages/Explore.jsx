@@ -5,7 +5,7 @@ import Icon from "../components/Icon";
 import ThoughtFeed from "../components/ThoughtFeed";
 import { useThoughts } from "../lib/useThoughts";
 
-const TOPICS = ["Technology", "Life", "Music", "Ideas", "Learning", "Business", "Creativity", "Relationships"];
+const TOPICS = ["Technology", "Life", "Music", "Ideas", "Learning", "Business", "Creativity", "Relationships", "Gaming"];
 const TABS = [
   { key: "foryou", label: "For You", url: "/thoughts/following" },
   { key: "trending", label: "Trending", url: "/thoughts/trending" },

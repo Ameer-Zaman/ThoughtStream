@@ -6,6 +6,7 @@ import { UserRowSkeletons } from "../components/Skeleton";
 import { formatDate } from "../components/format";
 import { useAuth } from "../context/AuthContext";
 import { setQueryData, useQuery } from "../lib/query";
+import SessionChart from "../components/SessionChart";
 
 const TABS = ["Overview", "Users", "Thoughts"];
 
@@ -34,15 +35,18 @@ function Overview() {
     ["Disabled users", data.disabledUsers, "can't log in"],
   ];
   return (
-    <div className="stat-grid">
-      {cards.map(([label, value, sub]) => (
-        <div className="stat-card" key={label}>
-          <div className="stat-label">{label}</div>
-          <div className="stat-value">{value}</div>
-          {sub && <div className="stat-sub">{sub}</div>}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="stat-grid">
+        {cards.map(([label, value, sub]) => (
+          <div className="stat-card" key={label}>
+            <div className="stat-label">{label}</div>
+            <div className="stat-value">{value}</div>
+            {sub && <div className="stat-sub">{sub}</div>}
+          </div>
+        ))}
+      </div>
+      <SessionChart />
+    </>
   );
 }
 

@@ -37,6 +37,60 @@ router.get(
   })
 );
 
+// ---------- Session analytics ----------
+// Per-day session count and average duration for the last N days (1–90, default 7).
+// Days with no sessions still appear with zeros, so the chart has no gaps.
+router.get(
+  "/sessions/daily",
+  asyncHandler(async (req, res) => {
+    const days = Math.min(Math.max(parseInt(req.query.days, 10) || 7, 1), 90);
+
+    const since = new Date();
+    since.setUTCHours(0, 0, 0, 0);
+    since.setUTCDate(since.getUTCDate() - (days - 1));
+
+    const rows = await Session.aggregate([
+      { $match: { createdAt: { $gte: since } } },
+      {
+        $project: {
+          day: {
+            $dateToString: { format: "%Y-%m-%d", date: "$createdAt", timezone: "UTC" },
+          },
+          durationMinutes: {
+            $divide: [{ $subtract: ["$lastActiveAt", "$createdAt"] }, 60000],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$day",
+          sessions: { $sum: 1 },
+          avgDurationMinutes: { $avg: "$durationMinutes" },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    const map = new Map(rows.map((r) => [r._id, r]));
+    const data = [];
+
+    for (let i = 0; i < days; i += 1) {
+      const d = new Date(since);
+      d.setUTCDate(since.getUTCDate() + i);
+      const key = d.toISOString().slice(0, 10);
+      const found = map.get(key);
+
+      data.push({
+        date: key,
+        sessions: found ? found.sessions : 0,
+        avgDurationMinutes: found ? Math.round(found.avgDurationMinutes * 10) / 10 : 0,
+      });
+    }
+
+    res.json({ days, data });
+  })
+);
+
 // ---------- Users ----------
 router.get(
   "/users",

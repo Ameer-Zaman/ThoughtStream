@@ -65,6 +65,7 @@ app.use("/api/likes", require("./routes/likes"));
 app.use("/api/comments", require("./routes/comments"));
 app.use("/api/messages", require("./routes/messages"));
 app.use("/api/search", require("./routes/search"));
+app.use("/api/bookmarks", require("./routes/bookmarks"));
 app.use("/api/admin", require("./routes/admin"));
 
 app.use((req, res) => res.status(404).json({ message: "Not found" }));

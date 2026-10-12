@@ -10,6 +10,7 @@ const warm = {
   "/": () => prefetch(thoughtsKey("/thoughts"), thoughtsFetcher("/thoughts")),
   "/explore": () => prefetch(thoughtsKey("/thoughts/trending"), thoughtsFetcher("/thoughts/trending")),
   "/messages": () => prefetch(CONVS_KEY, fetchConvs),
+  "/saved": () => prefetch(thoughtsKey("/bookmarks"), thoughtsFetcher("/bookmarks")),
 };
 
 const items = [

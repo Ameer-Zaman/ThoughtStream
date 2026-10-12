@@ -18,14 +18,29 @@ async function getAuth(token) {
 
   const [row] = await Session.aggregate([
     { $match: { sessionTokenHash: hash, expiresAt: { $gt: new Date() } } },
-    { $lookup: { from: User.collection.name, localField: "userId", foreignField: "_id", as: "user" } },
+    {
+      $lookup: {
+        from: User.collection.name,
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
     { $unwind: "$user" },
     {
       $project: {
         expiresAt: 1,
         user: {
-          _id: 1, fullName: 1, username: 1, email: 1, role: 1, isActive: 1,
-          profilePicture: 1, coverImage: 1, bio: 1, createdAt: 1,
+          _id: 1,
+          fullName: 1,
+          username: 1,
+          email: 1,
+          role: 1,
+          isActive: 1,
+          profilePicture: 1,
+          coverImage: 1,
+          bio: 1,
+          createdAt: 1,
         },
       },
     },
@@ -34,7 +49,19 @@ async function getAuth(token) {
   if (!row || !row.user || !row.user.isActive) return null;
 
   if (cache.size >= MAX_ENTRIES) cache.delete(cache.keys().next().value);
-  cache.set(hash, { user: row.user, expiresAt: new Date(row.expiresAt).getTime(), cachedAt: now });
+  cache.set(hash, {
+    user: row.user,
+    expiresAt: new Date(row.expiresAt).getTime(),
+    cachedAt: now,
+  });
+
+  // Bump lastActiveAt so the admin dashboard can measure session duration.
+  // Fire-and-forget: we don't want a slow write to block the request.
+  Session.updateOne(
+    { _id: row._id },
+    { $set: { lastActiveAt: new Date() } },
+  ).catch(() => {});
+
   return row.user;
 }
 

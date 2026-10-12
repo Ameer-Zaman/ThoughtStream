@@ -12,6 +12,8 @@ import Profile from "./pages/Profile";
 import Messages from "./pages/Messages";
 import Placeholder from "./pages/Placeholder";
 import Admin from "./pages/Admin";
+import Saved from "./pages/Saved";
+import Settings from "./pages/Settings";
 
 function Protected() {
   const { user, loading } = useAuth();
@@ -35,21 +37,66 @@ function PublicOnly({ children }) {
 export default function App() {
   return (
     <Routes>
-      <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
-      <Route path="/signup" element={<PublicOnly><Signup /></PublicOnly>} />
-      <Route path="/verify-otp" element={<PublicOnly><VerifyOtp /></PublicOnly>} />
-      <Route path="/forgot-password" element={<PublicOnly><ForgotPassword /></PublicOnly>} />
-      <Route path="/reset-password/:token" element={<PublicOnly><ResetPassword /></PublicOnly>} />
+      <Route
+        path="/login"
+        element={
+          <PublicOnly>
+            <Login />
+          </PublicOnly>
+        }
+      />
+      <Route
+        path="/signup"
+        element={
+          <PublicOnly>
+            <Signup />
+          </PublicOnly>
+        }
+      />
+      <Route
+        path="/verify-otp"
+        element={
+          <PublicOnly>
+            <VerifyOtp />
+          </PublicOnly>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <PublicOnly>
+            <ForgotPassword />
+          </PublicOnly>
+        }
+      />
+      <Route
+        path="/reset-password/:token"
+        element={
+          <PublicOnly>
+            <ResetPassword />
+          </PublicOnly>
+        }
+      />
 
       <Route element={<Protected />}>
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/profile/:username" element={<Profile />} />
         <Route path="/messages" element={<Messages />} />
-        <Route path="/notifications" element={<Placeholder title="Notifications" />} />
-        <Route path="/saved" element={<Placeholder title="Saved" />} />
-        <Route path="/admin" element={<AdminOnly><Admin /></AdminOnly>} />
-        <Route path="/settings" element={<Placeholder title="Settings" />} />
+        <Route
+          path="/notifications"
+          element={<Placeholder title="Notifications" />}
+        />
+        <Route path="/saved" element={<Saved />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminOnly>
+              <Admin />
+            </AdminOnly>
+          }
+        />
+        <Route path="/settings" element={<Settings />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

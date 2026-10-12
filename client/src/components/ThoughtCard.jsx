@@ -10,7 +10,12 @@ import { useAuth } from "../context/AuthContext";
 
 // The thought's data lives in the list that owns it (see useThoughts).
 // This card just displays it and reports changes through onChange / onRemove / onFollowChange.
-export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowChange }) {
+export default function ThoughtCard({
+  thought: t,
+  onChange,
+  onRemove,
+  onFollowChange,
+}) {
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -20,7 +25,9 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
   const [showComments, setShowComments] = useState(false);
   const [error, setError] = useState("");
   const likeBusy = useRef(false);
+  const bookmarkBusy = useRef(false);
 
+  if (!t.author) return null;
   const mine = t.author._id === user._id;
 
   // Close the three-dot menu when clicking anywhere else
@@ -38,12 +45,32 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
     const originalCount = t.likeCount;
     onChange(t._id, { liked: !was, likeCount: originalCount + (was ? -1 : 1) }); // instant
     try {
-      const res = was ? await api.delete(`/likes/${t._id}`) : await api.post(`/likes/${t._id}`);
+      const res = was
+        ? await api.delete(`/likes/${t._id}`)
+        : await api.post(`/likes/${t._id}`);
       onChange(t._id, { liked: res.data.liked, likeCount: res.data.likeCount });
     } catch {
       onChange(t._id, { liked: was, likeCount: originalCount }); // undo
     } finally {
       likeBusy.current = false;
+    }
+  };
+
+  const toggleBookmark = async () => {
+    if (bookmarkBusy.current) return;
+    bookmarkBusy.current = true;
+    const was = t.saved;
+    onChange(t._id, { saved: !was }); // instant
+    try {
+      const res = was
+        ? await api.delete(`/bookmarks/${t._id}`)
+        : await api.post(`/bookmarks/${t._id}`);
+      onChange(t._id, { saved: res.data.saved });
+    } catch (err) {
+      onChange(t._id, { saved: was }); // undo
+      setError(errMsg(err, "Could not save"));
+    } finally {
+      bookmarkBusy.current = false;
     }
   };
 
@@ -91,7 +118,10 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
         <div className="thought-main">
           <div className="thought-head">
             <div className="thought-who">
-              <Link to={`/profile/${t.author.username}`} className="thought-name">
+              <Link
+                to={`/profile/${t.author.username}`}
+                className="thought-name"
+              >
                 {t.author.fullName}
               </Link>
               <span className="thought-meta">@{t.author.username}</span>
@@ -101,7 +131,10 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
 
             {!mine && (
               <button
-                className={"btn btn-sm" + (t.iFollowAuthor ? " btn-following" : " btn-primary")}
+                className={
+                  "btn btn-sm" +
+                  (t.iFollowAuthor ? " btn-following" : " btn-primary")
+                }
                 onClick={toggleFollow}
               >
                 {t.iFollowAuthor ? "Following" : "Follow"}
@@ -137,8 +170,24 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
                     </>
                   ) : (
                     <>
-                      <button onClick={() => window.alert("Thanks, we'll take a look at this thought.")}>Report</button>
-                      <button onClick={() => navigate("/messages", { state: { userId: t.author._id } })}>Message</button>
+                      <button
+                        onClick={() =>
+                          window.alert(
+                            "Thanks, we'll take a look at this thought.",
+                          )
+                        }
+                      >
+                        Report
+                      </button>
+                      <button
+                        onClick={() =>
+                          navigate("/messages", {
+                            state: { userId: t.author._id },
+                          })
+                        }
+                      >
+                        Message
+                      </button>
                     </>
                   )}
                 </div>
@@ -148,12 +197,24 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
 
           {editing ? (
             <div className="edit-box">
-              <textarea value={draft} maxLength={500} onChange={(e) => setDraft(e.target.value)} autoFocus />
+              <textarea
+                value={draft}
+                maxLength={500}
+                onChange={(e) => setDraft(e.target.value)}
+                autoFocus
+              />
               <div className="edit-actions">
-                <button className="btn btn-sm" onClick={() => setEditing(false)}>
+                <button
+                  className="btn btn-sm"
+                  onClick={() => setEditing(false)}
+                >
                   Cancel
                 </button>
-                <button className="btn btn-primary btn-sm" onClick={saveEdit} disabled={!draft.trim()}>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={saveEdit}
+                  disabled={!draft.trim()}
+                >
                   Save
                 </button>
               </div>
@@ -162,17 +223,29 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
             <div className="thought-content">{renderContent(t.content)}</div>
           )}
 
-          {t.poll && <Poll thoughtId={t._id} poll={t.poll} onChange={(poll) => onChange(t._id, { poll })} />}
+          {t.poll && (
+            <Poll
+              thoughtId={t._id}
+              poll={t.poll}
+              onChange={(poll) => onChange(t._id, { poll })}
+            />
+          )}
 
           {error && <div className="form-error">{error}</div>}
 
           <div className="thought-actions">
-            <button className={"icon-btn like" + (t.liked ? " liked" : "")} onClick={toggleLike} aria-label="Like">
+            <button
+              className={"icon-btn like" + (t.liked ? " liked" : "")}
+              onClick={toggleLike}
+              aria-label="Like"
+            >
               <Icon name="heart" size={18} filled={t.liked} />
               <span>{t.likeCount}</span>
             </button>
             <button
-              className={"icon-btn comment-btn" + (showComments ? " active" : "")}
+              className={
+                "icon-btn comment-btn" + (showComments ? " active" : "")
+              }
               onClick={() => setShowComments((v) => !v)}
               aria-label="Comments"
             >
@@ -183,15 +256,24 @@ export default function ThoughtCard({ thought: t, onChange, onRemove, onFollowCh
               <Icon name="share" size={18} />
             </button>
             <span className="spacer" />
-            <button className="icon-btn" aria-label="Bookmark" title="Bookmark">
-              <Icon name="bookmark" size={18} />
+            <button
+              className={"icon-btn" + (t.saved ? " saved" : "")}
+              onClick={toggleBookmark}
+              aria-label={t.saved ? "Remove bookmark" : "Bookmark"}
+              title={t.saved ? "Remove bookmark" : "Bookmark"}
+            >
+              <Icon name="bookmark" size={18} filled={t.saved} />
             </button>
           </div>
 
           {showComments && (
             <CommentSection
               thoughtId={t._id}
-              onCountChange={(d) => onChange(t._id, { commentCount: Math.max(0, t.commentCount + d) })}
+              onCountChange={(d) =>
+                onChange(t._id, {
+                  commentCount: Math.max(0, t.commentCount + d),
+                })
+              }
             />
           )}
         </div>
