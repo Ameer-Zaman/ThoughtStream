@@ -1,15 +1,15 @@
 import { io } from "socket.io-client";
 import { API_URL } from "./api";
 
-// One shared socket for the whole app.
-const socket = io(API_URL, {
+// In production, API_URL is "" → connect to the current origin (Vercel)
+// and let Vercel's proxy forward /socket.io/* to Render.
+const socket = io(API_URL || window.location.origin, {
   withCredentials: true,
   autoConnect: false,
-  // Use a WebSocket straight away (falls back to polling only if WebSockets are blocked).
-  // Polling-first is what produced "400 Bad Request ... socket.io/?EIO=4&transport=polling&sid=..." after server restarts.
-  transports: ["websocket", "polling"],
+  // Polling first: Vercel's free-tier proxy doesn't upgrade WebSockets,
+  // so polling establishes the connection and Socket.IO tries to upgrade later.
+  transports: ["polling", "websocket"],
 });
-
 let wanted = false; // true while someone is logged in
 let retryTimer = null;
 
