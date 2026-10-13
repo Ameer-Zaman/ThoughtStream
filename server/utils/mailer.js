@@ -1,12 +1,27 @@
-const { Resend } = require("resend");
+const nodemailer = require("nodemailer");
 
-const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+let transporter = null;
+
+function getTransporter() {
+  if (transporter) return transporter;
+  if (!process.env.BREVO_SMTP_KEY) return null;
+
+  transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.BREVO_SMTP_LOGIN,
+      pass: process.env.BREVO_SMTP_KEY,
+    },
+  });
+  return transporter;
+}
 
 async function sendMail({ to, subject, text, html }) {
-  if (!resend) {
-    console.log("\n--- EMAIL (RESEND_API_KEY missing, printing instead) ---");
+  const t = getTransporter();
+  if (!t) {
+    console.log("\n--- EMAIL (BREVO_SMTP_KEY missing, printing instead) ---");
     console.log("To:", to);
     console.log("Subject:", subject);
     console.log(text);
@@ -14,15 +29,13 @@ async function sendMail({ to, subject, text, html }) {
     return;
   }
 
-  const { error } = await resend.emails.send({
-    from: process.env.MAIL_FROM || "ThoughtStream <onboarding@resend.dev>",
+  await t.sendMail({
+    from: process.env.MAIL_FROM || "ThoughtStream <thoughtstream4@gmail.com>",
     to,
     subject,
     text,
     html,
   });
-
-  if (error) throw new Error(`Resend: ${error.message}`);
 }
 
 module.exports = { sendMail };
