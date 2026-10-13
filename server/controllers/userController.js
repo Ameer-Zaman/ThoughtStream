@@ -116,14 +116,12 @@ const login = async (req, res) => {
     // Send OTP — do not await, so slow SMTP doesn't block the response
     transporter
       .sendMail({
-        from: process.env.EMAIL_USER,
+        from: process.env.MAIL_FROM || process.env.EMAIL_USER,
         to: user.email,
         subject: "Your ThoughtStream Email",
-        text: `Your ThoughtStream OTP is ${otp}. It will expire within 5 minutes.`,
+        text: `Your ThoughtStream OTP is ${otp}. It expires in 10 minutes.`,
       })
-      .catch((mailError) => {
-        console.error("Failed to send OTP email:", mailError);
-      });
+      .catch((err) => console.error("OTP email failed:", err.message));
 
     return res.status(200).json({
       message: "OTP generated successfully",
@@ -321,7 +319,10 @@ const resetPassword = async (req, res) => {
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateUniqueUsername = async (email) => {
-  const baseUsername = email.split("@")[0].toLowerCase().replace(/[^a-z0-9_]/g, "");
+  const baseUsername = email
+    .split("@")[0]
+    .toLowerCase()
+    .replace(/[^a-z0-9_]/g, "");
 
   let username = baseUsername || "user";
   let count = 1;
