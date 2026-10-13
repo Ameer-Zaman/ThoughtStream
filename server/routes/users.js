@@ -75,12 +75,13 @@ router.post(
       expiresAt: new Date(Date.now() + 10 * 60 * 1000),
     });
 
-    await sendMail({
+    // Fire and forget — don't block the response on email delivery.
+    sendMail({
       to: user.email,
       subject: "Your ThoughtStream login code",
       text: `Your verification code is ${otp}. It expires in 10 minutes.`,
       html: `<p>Your ThoughtStream verification code is:</p><h2>${otp}</h2><p>It expires in 10 minutes.</p>`,
-    });
+    }).catch((err) => console.error("OTP email failed:", err.message));
 
     res.json({ message: "OTP sent to your email", userId: user._id });
   })
@@ -183,12 +184,15 @@ router.post(
       });
       const frontend = (process.env.FRONTEND_URL || "http://localhost:5173").split(",")[0].trim();
       const link = `${frontend}/reset-password/${resetToken}`;
-      await sendMail({
+
+      // Fire and forget — don't block the response on email delivery.
+      sendMail({
         to: user.email,
         subject: "Reset your ThoughtStream password",
         text: `Click the link to reset your password (valid for 1 hour): ${link}`,
         html: `<p>Click the link to reset your password (valid for 1 hour):</p><p><a href="${link}">${link}</a></p>`,
-      });
+      }).catch((err) => console.error("Reset email failed:", err.message));
+
       // Returning the token is handy while developing, but never do it in production.
       if (!isProd()) response.resetToken = resetToken;
     }
