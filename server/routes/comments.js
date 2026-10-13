@@ -4,6 +4,7 @@ const Thought = require("../models/Thought");
 const { requireAuth } = require("../middleware/auth");
 const asyncHandler = require("../utils/asyncHandler");
 const { AUTHOR_FIELDS } = require("../utils/helpers");
+const { notify, emitTo } = require("../utils/notify");
 
 const router = express.Router();
 router.use(requireAuth);
@@ -15,16 +16,18 @@ router.post(
     if (!content) return res.status(400).json({ message: "Comment can't be empty" });
     if (content.length > 500) return res.status(400).json({ message: "Max 500 characters" });
 
-    const thought = await Thought.exists({ _id: req.params.thoughtId });
+    const thought = await Thought.findById(req.params.thoughtId).select("authorId").lean();
     if (!thought) return res.status(404).json({ message: "Thought not found" });
 
     let parentComment = null;
+    let parentAuthorId = null;
     if (req.body.parentComment) {
-      const parent = await Comment.findById(req.body.parentComment);
+      const parent = await Comment.findById(req.body.parentComment).select("authorId thoughtId").lean();
       if (!parent || String(parent.thoughtId) !== String(req.params.thoughtId)) {
         return res.status(400).json({ message: "Invalid parent comment" });
       }
       parentComment = parent._id;
+      parentAuthorId = parent.authorId;
     }
 
     const created = await Comment.create({
@@ -33,6 +36,20 @@ router.post(
       content,
       parentComment,
     });
+
+    // Reply → notify the parent comment author. Comment → notify the thought author.
+    const recipient = parentAuthorId || thought.authorId;
+    const type = parentComment ? "reply" : "comment";
+
+    const n = await notify({
+      recipient,
+      actor: req.user._id,
+      type,
+      thought: req.params.thoughtId,
+      comment: created._id,
+    });
+    if (n) emitTo(req.app, recipient, "notification", n);
+
     const comment = await Comment.findById(created._id).populate("authorId", AUTHOR_FIELDS).lean();
     res.status(201).json({ comment });
   })

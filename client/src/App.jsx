@@ -14,6 +14,7 @@ import Placeholder from "./pages/Placeholder";
 import Admin from "./pages/Admin";
 import Saved from "./pages/Saved";
 import Settings from "./pages/Settings";
+import Notifications from "./pages/Notifications";
 
 function Protected() {
   const { user, loading } = useAuth();
@@ -83,10 +84,7 @@ export default function App() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/profile/:username" element={<Profile />} />
         <Route path="/messages" element={<Messages />} />
-        <Route
-          path="/notifications"
-          element={<Placeholder title="Notifications" />}
-        />
+        <Route path="/notifications" element={<Notifications />} />
         <Route path="/saved" element={<Saved />} />
         <Route
           path="/admin"

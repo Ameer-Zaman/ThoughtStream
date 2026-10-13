@@ -4,6 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import { prefetch } from "../lib/query";
 import { thoughtsFetcher, thoughtsKey } from "../lib/useThoughts";
 import { CONVS_KEY, fetchConvs } from "../lib/messagesQueries";
+import { useNotificationStream, useUnreadCount } from "../lib/notifications";
+import api from "../api";
 
 // Hovering a nav item starts loading that page's data a moment before you click it
 const warm = {
@@ -11,6 +13,10 @@ const warm = {
   "/explore": () => prefetch(thoughtsKey("/thoughts/trending"), thoughtsFetcher("/thoughts/trending")),
   "/messages": () => prefetch(CONVS_KEY, fetchConvs),
   "/saved": () => prefetch(thoughtsKey("/bookmarks"), thoughtsFetcher("/bookmarks")),
+  "/notifications": () => {
+    prefetch("notifications:list", () => api.get("/notifications").then((r) => r.data.notifications || []));
+    prefetch("notifications:unread", () => api.get("/notifications/unread-count").then((r) => r.data.count || 0));
+  },
 };
 
 const items = [
@@ -25,6 +31,9 @@ const items = [
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  useNotificationStream();
+  const { data: unread = 0 } = useUnreadCount();
 
   const handleLogout = async () => {
     await logout();
@@ -50,6 +59,9 @@ export default function Sidebar() {
           >
             <Icon name={item.icon} />
             <span className="nav-label">{item.label}</span>
+            {item.to === "/notifications" && unread > 0 && (
+              <span className="nav-badge">{unread > 99 ? "99+" : unread}</span>
+            )}
           </NavLink>
         ))}
       </nav>

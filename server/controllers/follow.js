@@ -2,6 +2,7 @@ const Follow = require("../models/Follow");
 const User = require("../models/User");
 const asyncHandler = require("../utils/asyncHandler");
 const { relationship } = require("../utils/follow");
+const { notify, unnotify, emitTo } = require("../utils/notify");
 
 const USER_FIELDS = "fullName username profilePicture bio";
 
@@ -13,16 +14,34 @@ exports.follow = asyncHandler(async (req, res) => {
   const target = await User.findById(targetId).select("_id");
   if (!target) return res.status(404).json({ message: "User not found" });
 
-  await Follow.updateOne(
+  const result = await Follow.updateOne(
     { follower: req.user._id, following: targetId },
     { $setOnInsert: { follower: req.user._id, following: targetId } },
     { upsert: true }
   );
+
+  // Only notify if this was a NEW follow
+  if (result.upsertedCount > 0) {
+    const n = await notify({
+      recipient: targetId,
+      actor: req.user._id,
+      type: "follow",
+    });
+    if (n) emitTo(req.app, targetId, "notification", n);
+  }
+
   res.json(await relationship(req.user._id, targetId));
 });
 
 exports.unfollow = asyncHandler(async (req, res) => {
   await Follow.deleteOne({ follower: req.user._id, following: req.params.userId });
+
+  await unnotify({
+    recipient: req.params.userId,
+    actor: req.user._id,
+    type: "follow",
+  });
+
   res.json(await relationship(req.user._id, req.params.userId));
 });
 
